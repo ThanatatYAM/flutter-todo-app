@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import './screens/home.dart';
+import 'pages/home.dart';
+import 'package:flutter_todo_app/pages/pin_login/pin_login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'ToDo App',
-      home: Home(),
+      home: PinLoginPage(),
     );
   }
 }

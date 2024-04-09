@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../model/todo.dart';
 import '../constants/colors.dart';
 import '../widgets/todo_item.dart';
+import '../pages/note.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -42,18 +43,18 @@ class _HomeState extends State<Home> {
                     children: [
                       Container(
                         margin: EdgeInsets.only(
-                          top: 50,
+                          top: 20,
                           bottom: 20,
                         ),
                         child: Text(
-                          'All ToDos',
+                          'All Todo(s)',
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
-                      for (ToDo todoo in _foundToDo.reversed)
+                      for (ToDo todoo in _foundToDo)
                         ToDoItem(
                           todo: todoo,
                           onToDoChanged: _handleToDoChange,
@@ -84,7 +85,6 @@ class _HomeState extends State<Home> {
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.grey,
-                        offset: Offset(0.0, 0.0),
                         blurRadius: 10.0,
                         spreadRadius: 0.0,
                       ),
@@ -94,7 +94,7 @@ class _HomeState extends State<Home> {
                   child: TextField(
                     controller: _todoController,
                     decoration: InputDecoration(
-                        hintText: 'Add a new todo item',
+                        hintText: 'Add a new things todo',
                         border: InputBorder.none),
                   ),
                 ),
@@ -109,10 +109,29 @@ class _HomeState extends State<Home> {
                     '+',
                     style: TextStyle(
                       fontSize: 40,
+                      color: Colors.white,
                     ),
                   ),
                   onPressed: () {
-                    _addToDoItem(_todoController.text);
+                    if (_todoController.text.isEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("ข้อผิดพลาด"),
+                            content: Text("กรุณาใส่ข้อมูลกิจกรรม"),
+                            actions: [
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () => Navigator.of(context).pop(),
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      _addToDoItem(_todoController.text);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     primary: tdBlue,
@@ -197,21 +216,22 @@ class _HomeState extends State<Home> {
 
   AppBar _buildAppBar() {
     return AppBar(
-      backgroundColor: tdBGColor,
+      backgroundColor: tdBlue,
       elevation: 0,
       title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Icon(
-          Icons.menu,
-          color: tdBlack,
-          size: 30,
+        InkWell(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => MyNote()));
+          },
+          child: Icon(
+            Icons.note_alt_outlined,
+            color: tdBlack,
+            size: 30,
+          ),
         ),
         Container(
-          height: 40,
-          width: 40,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.asset('assets/images/avatar.jpeg'),
-          ),
+          child: Text("TODOO!"),
         ),
       ]),
     );
